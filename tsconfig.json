@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2017",
     "lib": [
       "dom",
       "dom.iterable",
@@ -29,7 +29,8 @@
         "./src/*"
       ]
     },
-    "strict": false
+    "strict": false,
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
