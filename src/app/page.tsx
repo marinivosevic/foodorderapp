@@ -1,13 +1,17 @@
-import Image from 'next/image'
-import Header from '../Components/Header'
-import FoodCard from '@/Components/FoodCard'
-export default function Home() {
+import Head from "next/head";
+import FirestoreData from "../Components/testdb";
+import TestDb from "../Components/testdb";
+import Header from "../Components/Header";
+import FoodCard from "@/Components/FoodCard";
+
+
+const Home = () => {
   return (
-    <main>
-      <div>
+    <div>
       <Header/>
       <FoodCard/>
-      </div>
-    </main>
-  )
-}
+    </div>
+  );
+};
+
+export default Home;
