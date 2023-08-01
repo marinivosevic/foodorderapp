@@ -3,13 +3,18 @@ import FirestoreData from "../Components/testdb";
 import TestDb from "../Components/testdb";
 import Header from "../Components/Header";
 import FoodCard from "@/Components/FoodCard";
+import AddButton from "@/Components/AddButton";
+
 
 
 const Home = () => {
+  
   return (
     <div>
       <Header/>
       <FoodCard/>
+      <AddButton/>
+      
     </div>
   );
 };

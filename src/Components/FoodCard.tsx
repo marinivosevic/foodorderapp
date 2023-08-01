@@ -2,11 +2,13 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase-conf'; 
+import Image from 'next/image';
 
 interface Food {
   id: string;
   Name: string;
   Price: number;
+  Type:string;
   // Add other properties if present in your Firestore documents
 }
   
@@ -40,14 +42,14 @@ interface Food {
             {food.map((product) => (
               <a key={product.id}  className="group">
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                  {/* <Image
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
-                    width={50}
-                    height={40}
-                  /> */}
+                  { <Image
+                    src={`/images/${product.Name}.jpg`} alt={product.Name}
+                    width={300}
+                    height={150}
+                  /> }
                 </div>
-                <h3 className="mt-4 text-sm text-gray-700">{product.Name}</h3>
+                <h4 className="mt-4 text-xs text-gray-700">{product.Type}</h4>
+                <h3 className="mt- text-sm text-gray-700">{product.Name}</h3>
                 <p className="mt-1 text-lg font-medium text-gray-900">{product.Price}</p>
               </a>
             ))}
