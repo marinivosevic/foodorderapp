@@ -36,7 +36,7 @@ export default function FoodCard() {
   const deleteFood = async (documentID: string) => {
     try {
       await deleteDoc(doc(db, "Food", documentID));
-     
+     getFood();
       console.log("Success");
     } catch {
       console.log("Failed");

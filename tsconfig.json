@@ -37,7 +37,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/app/AddItem/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]
