@@ -4,6 +4,8 @@ import { collection, deleteDoc, getDocs, doc } from "firebase/firestore";
 import { db } from "../firebase-conf";
 import Image from "next/image";
 import { useFoodFetch } from '../pages/api/getFood';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase-conf";
 interface Food {
   id: string;
   Name: string;
@@ -14,7 +16,7 @@ interface Food {
 
 export default function FoodCard() {
   const [food, setFood] = useState<Food[]>([]);
-
+  const [user] = useAuthState(auth);
   useEffect(() => {
      const getFood = async () => {
       try {
@@ -85,7 +87,7 @@ export default function FoodCard() {
                   </p>
                 </div>
                 <div className="flex ml-auto">
-                <button onClick={() => deleteFood(product.id)} className="bg-red-400 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>
+                {user?.uid === "sHBn1AUOmjMY6weWsUq3y1IE5AF3" && (<button onClick={() => deleteFood(product.id)} className="bg-red-400 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>)}
                 </div>
               </div>
             </a>

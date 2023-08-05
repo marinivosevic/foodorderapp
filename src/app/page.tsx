@@ -1,22 +1,23 @@
+"use client";
 import Head from "next/head";
 import FirestoreData from "../Components/testdb";
 import TestDb from "../Components/testdb";
 import Header from "../Components/Header";
 import FoodCard from "@/Components/FoodCard";
 import AddButton from "@/app/AddItem/page";
+import { auth } from "@/firebase-conf";
+import { useAuthState } from "react-firebase-hooks/auth";
+import SignedInHeader from "../Components/SignedInHeader";
+import ButtonForAdding from "@/Components/ButtonForAdding";
 
 const Home = () => {
+  const [user] = useAuthState(auth);
   return (
     <div>
-      <Header />
-      <div className="flex justify-center">
-        <a href="/AddItem">
-          <button className="bg-green-400 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full ">
-            Add item
-          </button>
-        </a>
-      </div>
-      <FoodCard />
+      {user ? <SignedInHeader /> : <Header />}
+      {user?.uid === "sHBn1AUOmjMY6weWsUq3y1IE5AF3" && <ButtonForAdding />}
+      
+      <FoodCard/>
     </div>
   );
 };
