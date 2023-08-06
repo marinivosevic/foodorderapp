@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useFoodFetch } from '../pages/api/getFood';
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase-conf";
+import { useStateContext } from "@/context/StateContext";
 interface Food {
   id: string;
   Name: string;
@@ -17,6 +18,7 @@ interface Food {
 export default function FoodCard() {
   const [food, setFood] = useState<Food[]>([]);
   const [user] = useAuthState(auth);
+  const {onAdd} = useStateContext();
   useEffect(() => {
      const getFood = async () => {
       try {
@@ -57,6 +59,10 @@ export default function FoodCard() {
       console.error("Error fetching food:", error);
     }
   };
+
+const addToCart = () =>{
+  
+}
   
  
 
@@ -88,6 +94,9 @@ export default function FoodCard() {
                 </div>
                 <div className="flex ml-auto">
                 {user?.uid === "sHBn1AUOmjMY6weWsUq3y1IE5AF3" && (<button onClick={() => deleteFood(product.id)} className="bg-red-400 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>)}
+                </div>
+                <div>
+                  <button onClick={()=>onAdd(product,1)} className="mt-6 bg-blue-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Add To Cart</button>
                 </div>
               </div>
             </a>

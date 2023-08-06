@@ -14,6 +14,7 @@ import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/
 import Image from 'next/image'
 import React from 'react'
 import Link from 'next/link';
+import Cart from './Cart';
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -120,6 +121,9 @@ export default function Example() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
         <Link href = "/Login"><button  className="py-2 px-4 shadow-md no-underline rounded-full bg-green-400 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2">Log in</button></Link>
         </div>
+      
+        <Cart/>
+        
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-10" />
