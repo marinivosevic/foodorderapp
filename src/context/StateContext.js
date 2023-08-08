@@ -5,49 +5,53 @@ const Context = createContext();
 
 export const StateContext = ({ children }) => {
   const [showCart, setshowCart] = useState(false);
-  const [cartItems, setcartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [totalPrice, settotalPrice] = useState();
-  const [totalQuantites, settotalQuantites] = useState();
+  const [totalQuantites, setTotalQuantites] = useState();
   const [qty, setqty] = useState(1);
 
-  const onAdd = (product, quantity) => {
-    const checkProductInCart = cartItems.find(
-      (item) => item._id === product._id
-    );
+  const onAdd =  (product,quantity) =>{
+    const checkProductInCart = cartItems.find((item) => item.id === product.id);
+    
+    settotalPrice((prevTotalPrice) => prevTotalPrice + product.price *quantity );
+    setTotalQuantites((prevTotalQuantities) => prevTotalQuantities + quantity);
+    
+    if(checkProductInCart){
+        
 
-    if (checkProductInCart) {
-      settotalPrice(
-        (prevTotalPrice = prevTotalPrice + product.price * quantity)
-      );
-      settotalQuantites(
-        (prevTotalQuantities) => prevTotalQuantities + quantity
-      );
+        const updatedCartItems = cartItems.map((cartProduct) => {
+            if(cartProduct.id === product.id) return{
+                ...cartProduct,
+                quantity:cartProduct.quantity + quantity
+            }
+        })
 
-      const updatedCartItems = cartItems.map((cartProduct) => {
-        if (cartProduct._id === product._id)
-          return {
-            ...cartProduct,
-            quantity: cartProduct.quantity + quantity,
-          };
-      });
-      setcartItems(updatedCartItems);
-      alert("uspjelo if");
-    } else {
-      product.quantity = quantity;
-      setcartItems([...cartItems, { ...product }]);
-      alert("uspjelo else");
+        setCartItems(updatedCartItems);
+        console.log(cartItems);
+    }else{
+        product.quantity = quantity;
+        setCartItems([...cartItems,{...product}]);
+        console.log(cartItems);
     }
-  };
+    
+}
 
   return (
     <Context.Provider
       value={{
         showCart,
-        cartItems,
-        totalPrice,
-        totalQuantites,
-        qty,
-        onAdd
+            setshowCart,
+            cartItems,
+            totalPrice,
+            totalQuantites,
+            qty,
+            
+            onAdd,
+            
+            
+            setCartItems,
+            settotalPrice,
+            setTotalQuantites
       }}
     >
       {children}
