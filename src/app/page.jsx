@@ -7,7 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import SignedInHeader from "../Components/SignedInHeader";
 import ButtonForAdding from "@/Components/ButtonForAdding";
 import { StateContext } from "../context/StateContext";
-//TODOimport { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const Home = () => {
   const [user] = useAuthState(auth);
@@ -15,7 +15,7 @@ const Home = () => {
   return (
     <div>
       <StateContext>
-        
+        <Toaster/>
         {user ? <SignedInHeader /> : <Header />}
         {user?.uid === "sHBn1AUOmjMY6weWsUq3y1IE5AF3" && <ButtonForAdding />}
         <FoodCard />

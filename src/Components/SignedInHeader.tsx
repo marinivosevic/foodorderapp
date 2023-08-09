@@ -20,6 +20,7 @@ import React from "react";
 import Link from "next/link";
 import { auth } from "@/firebase-conf";
 import {useAuthState} from "react-firebase-hooks/auth"
+import Cart from "./Cart";
 
 const products = [
   {
@@ -179,6 +180,7 @@ export default function Example() {
             Sign Out
           </button>
         </div>
+        <Cart/>
       </nav>
       <Dialog
         as="div"
