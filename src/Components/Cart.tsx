@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import "../app/Cart.css";
 import { useStateContext } from "@/context/StateContext";
 import Image from "next/image";
+import {AiOutlineMinus, AiOutlinePlus, AiOutlineLeft,AiOutlineShopping} from 'react-icons/ai';
 
 const Cart = () => {
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
-  const { cartItems,totalPrice, onRemove } = useStateContext();
+  const { cartItems,totalPrice, onRemove,toggleCartItemQty } = useStateContext();
   const handleOpenMenu = () => {
     setSideMenuOpen(true);
   };
@@ -198,8 +199,10 @@ const Cart = () => {
                                     </p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">Qty 1</p>
-
+                                    <span onClick={() => toggleCartItemQty(item.id,'dec')}>  <AiOutlineMinus/></span>
+                                  
+                                    <p className="text-gray-500">{item.quantity} </p>
+                                    <span onClick={() => toggleCartItemQty(item.id,'inc')}>  <AiOutlinePlus/></span>
                                     <div className="flex">
                                       <button
                                         type="button"
