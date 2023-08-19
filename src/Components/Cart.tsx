@@ -1,19 +1,52 @@
+"use client";
 import React, { useState } from "react";
 // Create this CSS file for styling
 import "../app/Cart.css";
 import { useStateContext } from "@/context/StateContext";
 import Image from "next/image";
-import {AiOutlineMinus, AiOutlinePlus, AiOutlineLeft,AiOutlineShopping} from 'react-icons/ai';
+import {
+  AiOutlineMinus,
+  AiOutlinePlus,
+  AiOutlineLeft,
+  AiOutlineShopping,
+} from "react-icons/ai";
+import { loadStripe } from "@stripe/stripe-js";
+import getStripe from "../../utils/getStripe";
 
 const Cart = () => {
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
-  const { cartItems,totalPrice, onRemove,toggleCartItemQty } = useStateContext();
+  const { cartItems, totalPrice, onRemove, toggleCartItemQty } =
+    useStateContext();
   const handleOpenMenu = () => {
     setSideMenuOpen(true);
+    console.log(cartItems);
   };
 
   const handleCloseMenu = () => {
     setSideMenuOpen(false);
+  };
+
+  const CheckoutHandle = async () => {
+    const stripePromise = await getStripe();
+
+    try {
+      const response = await fetch("/api/checkout_sessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cartItems }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error while creating checkout session");
+      }
+
+      const data = await response.json();
+      stripePromise.redirectToCheckout({ sessionId: data.id });
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -80,7 +113,6 @@ const Cart = () => {
                       <div className="flex justify-center ">
                         <h2>Your cart is empty</h2>
                       </div>
-                      
                     </div>
 
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
@@ -91,13 +123,14 @@ const Cart = () => {
                       <p className="mt-0.5 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.
                       </p>
-                      <div className="mt-6">
-                        <a
-                          href="#"
-                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                        >
-                          Checkout
-                        </a>
+                      <div className="mt-6 ">
+                        <form action="/api/checkout_sessions" method="POST">
+                          <section className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
+                            <button type="submit" role="link">
+                              Checkout
+                            </button>
+                          </section>
+                        </form>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
@@ -199,15 +232,31 @@ const Cart = () => {
                                     </p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <span onClick={() => toggleCartItemQty(item.id,'dec')}>  <AiOutlineMinus/></span>
-                                  
-                                    <p className="text-gray-500">{item.quantity} </p>
-                                    <span onClick={() => toggleCartItemQty(item.id,'inc')}>  <AiOutlinePlus/></span>
+                                    <span
+                                      onClick={() =>
+                                        toggleCartItemQty(item.id, "dec")
+                                      }
+                                    >
+                                      {" "}
+                                      <AiOutlineMinus />
+                                    </span>
+
+                                    <p className="text-gray-500">
+                                      {item.quantity}{" "}
+                                    </p>
+                                    <span
+                                      onClick={() =>
+                                        toggleCartItemQty(item.id, "inc")
+                                      }
+                                    >
+                                      {" "}
+                                      <AiOutlinePlus />
+                                    </span>
                                     <div className="flex">
                                       <button
                                         type="button"
                                         className="font-medium text-indigo-600 hover:text-indigo-500"
-                                        onClick={ () => onRemove(item)}
+                                        onClick={() => onRemove(item)}
                                       >
                                         Remove
                                       </button>
@@ -230,12 +279,13 @@ const Cart = () => {
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <a
-                          href="#"
-                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                        >
-                          Checkout
-                        </a>
+                        <form action="/api/checkout_sessions" method="POST">
+                          <section className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
+                            <button type="submit" role="link">
+                              Checkout
+                            </button>
+                          </section>
+                        </form>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
