@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 // Create this CSS file for styling
 import "../app/Cart.css";
 import { useStateContext } from "@/context/StateContext";
@@ -11,9 +11,12 @@ import {
   AiOutlineShopping,
 } from "react-icons/ai";
 import { loadStripe } from "@stripe/stripe-js";
-import getStripe from "../../utils/getStripe";
-
+import {stripe} from "../../utils/getStripe";
+const stripePromise = loadStripe(
+  "pk_test_51NegO4CFSFv9HZRaUNYN8I30wbAbzSKI7tYKIYt7qpEWWEszRvoMkoPMeKmW8eV7SqXyfhC6hKi72UiXDU8jNKYi006S8wh3J6"
+);
 const Cart = () => {
+  const cartRef = useRef();
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
   const { cartItems, totalPrice, onRemove, toggleCartItemQty } =
     useStateContext();
@@ -26,29 +29,16 @@ const Cart = () => {
     setSideMenuOpen(false);
   };
 
-  const CheckoutHandle = async () => {
-    const stripePromise = await getStripe();
-
-    try {
-      const response = await fetch("/api/checkout_sessions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cartItems }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error while creating checkout session");
-      }
-
-      const data = await response.json();
-      stripePromise.redirectToCheckout({ sessionId: data.id });
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const handleCheckout = async () => {
+    
+    const response = await fetch('/api/checkout_sessions',{
+      method:"POST",
+      body:JSON.stringify(cartItems)
+    })
+    const data = await response.json()
+    const result = await stripe.
   };
-
+  
   return (
     <div>
       <button onClick={handleOpenMenu} className=" absoulte top-10">
@@ -124,13 +114,13 @@ const Cart = () => {
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6 ">
-                        <form action="/api/checkout_sessions" method="POST">
+                     
                           <section className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
-                            <button type="submit" role="link">
+                            <button type="submit" role="link" onClick={handleCheckout}>
                               Checkout
                             </button>
                           </section>
-                        </form>
+                       
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
@@ -279,13 +269,13 @@ const Cart = () => {
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <form action="/api/checkout_sessions" method="POST">
+                       
                           <section className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
-                            <button type="submit" role="link">
+                            <button type="submit" role="link" onClick={handleCheckout}>
                               Checkout
                             </button>
                           </section>
-                        </form>
+                        
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
