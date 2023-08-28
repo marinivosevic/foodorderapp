@@ -4,7 +4,7 @@ import { useState } from "react";
 import { doc, addDoc, collection, getDocs } from "firebase/firestore";
 import { db, storage} from "../../firebase-conf";
 import Link from "next/link";
-
+import { toast } from "react-hot-toast";
 
 
 //Funkcuija za skirvanje forme i gumba
@@ -37,7 +37,7 @@ function AddButton() {
 
     const response = await fetch(endpoint, options);
     const result = await response.json();
-    alert("Item added succesfully");
+    toast.success(`${product.Name} Successfully added to cart`)
   };
 
   

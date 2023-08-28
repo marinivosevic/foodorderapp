@@ -1,6 +1,13 @@
-import  Stripe from 'stripe';
+import {loadStripe} from '@stripe/stripe-js';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!,{
-  apiVersion:"2022-11-15"
+let stripePromise;
+
+const getStripe = () =>{
+    if(!stripePromise){
+        stripePromise = loadStripe('pk_test_51NegO4CFSFv9HZRaUNYN8I30wbAbzSKI7tYKIYt7qpEWWEszRvoMkoPMeKmW8eV7SqXyfhC6hKi72UiXDU8jNKYi006S8wh3J6');
+    }
+
+    return stripePromise;
 }
-)
+
+export default getStripe;
